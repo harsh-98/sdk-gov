@@ -1,4 +1,5 @@
-
+arbitrum.ts
+mainnet.ts
 sdkgo_tokenmap.ts
 liquidator_groups.ts
 node_modules
