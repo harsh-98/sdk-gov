@@ -45,6 +45,13 @@ export  function arbitrum(obj : RR ) {
         (obj['farmingPools'] as Record<string, string>)[t] = tokens[t];
     }
     })
+    if (Object.keys(obj['farmingPools']).length == 0) {
+      obj['farmingPools']= {
+        'sdUSDCV3': '0x608F9e2E8933Ce6b39A8CddBc34a1e3E8D21cE75',
+        'sdWETHV3': '0x6773fF780Dd38175247795545Ee37adD6ab6139a',
+      };
+    }
+    // obj['farmingPools']['sdWETHV3'] = '0x6773fF780Dd38175247795545Ee37adD6ab6139a';
   }
 
 
