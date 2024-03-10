@@ -9,7 +9,7 @@ import { yearnTokens } from './src/tokens/yearn';
 import { convexTokens } from './src/tokens/convex';
 import { balancerLpTokens } from './src/tokens/balancer';
 import { PriceFeedType , PriceFeedData} from './src/oracles/pricefeedType';
-import {RR, removeNotDeployed} from './mainnet';
+import {RR, removeNotDeployed, AA} from './mainnet';
 import {convexLpTokens} from './src/tokens/convex';
 
 export  function arbitrum(obj : RR ) {
@@ -86,21 +86,28 @@ export  function arbitrum(obj : RR ) {
   //
 
   { // redstone 
-    type sdkGoRedStone = Record<string, PriceFeedData>;
-    var mains ={} as sdkGoRedStone;
-    var reserves ={} as sdkGoRedStone;
+    var mains =  {} as Record<string, AA>;
     for (const [token, details] of Object.entries(priceFeedsByToken)) {
      let networkRS= details.Arbitrum;
     if (networkRS?.Main.type == PriceFeedType.REDSTONE_ORACLE) {
-      mains[token] = networkRS?.Main;
-      }
+      let main = networkRS?.Main;
+      mains[token] = {
+        type:main.type,
+        dataServiceId:main.dataServiceId,
+        dataId: main.dataId,
+        signersThreshold:main.signersThreshold
+      };
+    }
       if (networkRS?.Reserve?.type == PriceFeedType.REDSTONE_ORACLE) {
-        reserves[token] =networkRS?.Reserve;
+        let main = networkRS?.Reserve;
+      mains[token] = {
+        type:main.type,
+        dataServiceId:main.dataServiceId,
+        dataId: main.dataId,
+        signersThreshold:main.signersThreshold
+      };
       }
     }
-    obj['redstone'] = {
-      mains: mains,
-      reserves: reserves,
-    }
+    obj['redstone'] = mains;
   }
 }

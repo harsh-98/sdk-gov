@@ -48,6 +48,7 @@ export  function mainnet(obj : RR ) {
   // //
   tokens['ETH']= '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
   tokens['yvSTETH'] ='0x15a2B3CfaFd696e1C783FE99eed168b78a3A371e';
+  tokens['GMX'] ='0x00eee00eee00eee00eee00eee00eee00eee00eee'; // gmx token
   obj['tokens'] = tokens;
   //
   {
@@ -91,21 +92,54 @@ export  function mainnet(obj : RR ) {
   //
 
   { // redstone 
-    type sdkGoRedStone = Record<string, PriceFeedData>;
-    var mains ={} as sdkGoRedStone;
-    var reserves ={} as sdkGoRedStone;
+    var mains ={
+      osETH: {
+      type: 15,
+      dataServiceId: 'redstone-primary-prod',
+      dataId: 'osETH',
+      signersThreshold: 5,
+    },
+    weETH: {
+      type: 15,
+      dataServiceId: 'redstone-primary-prod',
+      dataId: 'weETH',
+      signersThreshold: 5,
+    },
+    ezETH: {
+      type: 15,
+      dataServiceId: 'redstone-primary-prod',
+      dataId: 'ezETH',
+      signersThreshold: 5,
+    }
+   } as Record<string, AA>;
     for (const [token, details] of Object.entries(priceFeedsByToken)) {
      let networkRS= details.Mainnet;
     if (networkRS?.Main.type == PriceFeedType.REDSTONE_ORACLE) {
-      mains[token] = networkRS?.Main;
-      }
+      let main = networkRS?.Main;
+      mains[token] = {
+        type:main.type,
+        dataServiceId:main.dataServiceId,
+        dataId: main.dataId,
+        signersThreshold:main.signersThreshold
+      };
+    }
       if (networkRS?.Reserve?.type == PriceFeedType.REDSTONE_ORACLE) {
-        reserves[token] =networkRS?.Reserve;
+        let main = networkRS?.Reserve;
+      mains[token] = {
+        type:main.type,
+        dataServiceId:main.dataServiceId,
+        dataId: main.dataId,
+        signersThreshold:main.signersThreshold
+      };
       }
     }
-    obj['redstone'] = {
-      mains: mains,
-      reserves: reserves,
-    }
+    obj['redstone'] = mains;
   }
+}
+
+export type AA =  {
+  type: number;
+  dataServiceId: string;
+  dataId: string;
+  signersThreshold: number; 
 }
