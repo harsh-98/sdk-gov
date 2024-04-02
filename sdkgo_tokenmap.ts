@@ -2,6 +2,7 @@
 
 import {RR , mainnet} from './mainnet';
 import {arbitrum} from './arbitrum';
+import {optimism} from './optimism';
 
 let networkName = process.argv[2].toLocaleLowerCase();
 
@@ -20,7 +21,10 @@ function run () {
     case "arbitrum":
       arbitrum(obj);
       break;
-      default:
+    case "optimism":
+      optimism(obj);
+      break;
+    default:
         console.log("wrong network");
         process.exit(1);
   }

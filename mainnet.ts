@@ -14,7 +14,7 @@ import {convexLpTokens} from './src/tokens/convex';
 
 export function removeNotDeployed(obj: Record<string, string>) {
   for (const key in obj) {
-    if (obj[key] == 'NOT DEPLOYED') {
+    if (obj[key] == 'NOT DEPLOYED' || obj[key] == '0xNOT DEPLOYED') {
       delete obj[key];
     }
   }
@@ -49,13 +49,14 @@ export  function mainnet(obj : RR ) {
   tokens['ETH']= '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
   tokens['yvSTETH'] ='0x15a2B3CfaFd696e1C783FE99eed168b78a3A371e';
   tokens['GMX'] ='0x00eee00eee00eee00eee00eee00eee00eee00eee'; // gmx token
+  tokens['OP'] ='0x00fff00fff00fff00fff00fff00fff00fff00fff'; // gmx token
   obj['tokens'] = tokens;
   //
   {
     obj['farmingPools'] = {} as Record<string, string>;
     // farming tokens
-     ['sdUSDCV3', 'sdWETHV3', 'sdWBTCV3', 'sdDAIV3'].forEach((t) => {
-      if (tokens[t]) {
+     ['sdUSDCV3', 'sdWETHV3', 'sdWBTCV3', 'sdDAIV3','sdUSDTV3','sdGHOV3'].forEach((t) => {
+      if (tokens[t] && "NOT DEPLOYED" != tokens[t]) {
         (obj['farmingPools'] as Record<string, string>)[t] = tokens[t];
   }
 })

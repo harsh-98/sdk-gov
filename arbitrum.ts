@@ -40,7 +40,7 @@ export  function arbitrum(obj : RR ) {
   {
     obj['farmingPools'] = {} as Record<string, string>;
     // farming tokens
-     ['sdUSDCV3', 'sdWETHV3', 'sdWBTCV3', 'sdDAIV3'].forEach((t) => {
+    ['sdUSDCV3', 'sdWETHV3', 'sdWBTCV3', 'sdDAIV3','sdUSDTV3','sdGHOV3'].forEach((t) => {
       if (tokens[t]) {
         (obj['farmingPools'] as Record<string, string>)[t] = tokens[t];
     }

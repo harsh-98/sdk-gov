@@ -1,5 +1,6 @@
 arbitrum.ts
 mainnet.ts
+optimism.ts
 sdkgo_tokenmap.ts
 liquidator_groups.ts
 node_modules
