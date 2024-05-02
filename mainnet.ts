@@ -8,7 +8,7 @@ import {curveTokens} from './src/tokens/curveLP'
 import { yearnTokens } from './src/tokens/yearn';
 import { convexTokens } from './src/tokens/convex';
 import { balancerLpTokens } from './src/tokens/balancer';
-import { PriceFeedType , PriceFeedData} from './src/oracles/pricefeedType';
+import { PriceFeedType , PriceFeedData, PriceFeedEntry, PriceFeed} from './src/oracles/pricefeedType';
 import {convexLpTokens} from './src/tokens/convex';
 
 
@@ -50,6 +50,7 @@ export  function mainnet(obj : RR ) {
   tokens['yvSTETH'] ='0x15a2B3CfaFd696e1C783FE99eed168b78a3A371e';
   tokens['GMX'] ='0x00eee00eee00eee00eee00eee00eee00eee00eee'; // gmx token
   tokens['OP'] ='0x00fff00fff00fff00fff00fff00fff00fff00fff'; // gmx token
+  tokens['weETH/ETH'] = '0x8C23b9E4CB9884e807294c4b4C33820333cC613c';
   obj['tokens'] = tokens;
   //
   {
@@ -113,28 +114,48 @@ export  function mainnet(obj : RR ) {
       signersThreshold: 5,
     }
    } as Record<string, AA>;
+   var composite = {} as Record<string, AA>;
     for (const [token, details] of Object.entries(priceFeedsByToken)) {
-     let networkRS= details.Mainnet;
-    if (networkRS?.Main.type == PriceFeedType.REDSTONE_ORACLE) {
-      let main = networkRS?.Main;
-      mains[token] = {
-        type:main.type,
-        dataServiceId:main.dataServiceId,
-        dataId: main.dataId,
-        signersThreshold:main.signersThreshold
-      };
-    }
-      if (networkRS?.Reserve?.type == PriceFeedType.REDSTONE_ORACLE) {
-        let main = networkRS?.Reserve;
-      mains[token] = {
-        type:main.type,
-        dataServiceId:main.dataServiceId,
-        dataId: main.dataId,
-        signersThreshold:main.signersThreshold
-      };
+     let networkRS = details.Mainnet;
+     if (networkRS == undefined) {
+        continue;
+     }
+     var  fields = [networkRS?.Main as PriceFeedData];
+     if (networkRS?.Reserve != undefined) {
+        fields.push(networkRS?.Reserve) ;
+     }
+     //
+
+     fields.forEach((main) => {
+      if (main.type == PriceFeedType.REDSTONE_ORACLE) {
+        mains[token] = {
+          type:main.type,
+          dataServiceId:main.dataServiceId,
+          dataId: main.dataId,
+          signersThreshold:main.signersThreshold
+        };
       }
+      //
+      if (main.type == PriceFeedType.COMPOSITE_ORACLE && main.targetToBasePriceFeed.type == PriceFeedType.REDSTONE_ORACLE) {
+        let target = main.targetToBasePriceFeed;
+        composite[token] = {
+          type:target.type,
+          dataServiceId:target.dataServiceId,
+          dataId: target.dataId,
+          signersThreshold:target.signersThreshold
+        };
+      }
+     })
+     //
     }
+    mains['weETH/ETH'] = {
+      type: PriceFeedType.REDSTONE_ORACLE,
+      dataServiceId:'redstone-primary-prod',
+      dataId: 'weETH_FUNDAMENTAL',
+      signersThreshold:5,
+    };
     obj['redstone'] = mains;
+    obj['compositeRedstone'] = composite;
   }
 }
 

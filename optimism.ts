@@ -90,27 +90,43 @@ export function optimism(obj: RR) {
   {
     // redstone
     var mains = {} as Record<string, AA>;
+    var composite = {} as Record<string, AA>;
     for (const [token, details] of Object.entries(priceFeedsByToken)) {
       let networkRS = details.Optimism;
-      if (networkRS?.Main.type == PriceFeedType.REDSTONE_ORACLE) {
-        let main = networkRS?.Main;
-        mains[token] = {
-          type: main.type,
-          dataServiceId: main.dataServiceId,
-          dataId: main.dataId,
-          signersThreshold: main.signersThreshold,
-        };
+      var fields = [networkRS?.Main as PriceFeedData];
+      if (networkRS == undefined) {
+        continue;
       }
-      if (networkRS?.Reserve?.type == PriceFeedType.REDSTONE_ORACLE) {
-        let main = networkRS?.Reserve;
-        mains[token] = {
-          type: main.type,
-          dataServiceId: main.dataServiceId,
-          dataId: main.dataId,
-          signersThreshold: main.signersThreshold,
-        };
+      if (networkRS?.Reserve != undefined) {
+        fields.push(networkRS?.Reserve);
       }
+      //
+      fields.forEach(main => {
+        if (main.type == PriceFeedType.REDSTONE_ORACLE) {
+          mains[token] = {
+            type: main.type,
+            dataServiceId: main.dataServiceId,
+            dataId: main.dataId,
+            signersThreshold: main.signersThreshold,
+          };
+        }
+        //
+        if (
+          main.type == PriceFeedType.COMPOSITE_ORACLE &&
+          main.targetToBasePriceFeed.type == PriceFeedType.REDSTONE_ORACLE
+        ) {
+          let target = main.targetToBasePriceFeed;
+          composite[token] = {
+            type: target.type,
+            dataServiceId: target.dataServiceId,
+            dataId: target.dataId,
+            signersThreshold: target.signersThreshold,
+          };
+        }
+      });
+      //
     }
     obj["redstone"] = mains;
+    obj["compositeRedstone"] = composite;
   }
 }
