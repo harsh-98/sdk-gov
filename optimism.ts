@@ -3,14 +3,20 @@ import {
   contractParams,
   CurveParams,
 } from "./src/contracts/contracts";
-import { tokenDataByNetwork } from "./src/tokens/token";
+import {
+  tokenDataByNetwork,
+  SupportedToken,
+  TickerInfo,
+  tickerInfoTokensByNetwork,
+} from "./src/tokens/token";
+
 import { priceFeedsByToken } from "./src/oracles/priceFeeds";
 import { curveTokens } from "./src/tokens/curveLP";
 import { yearnTokens } from "./src/tokens/yearn";
 import { convexTokens } from "./src/tokens/convex";
 import { balancerLpTokens } from "./src/tokens/balancer";
 import { PriceFeedType, PriceFeedData } from "./src/oracles/pricefeedType";
-import { RR, removeNotDeployed, AA } from "./mainnet";
+import { RR, removeNotDeployed, AA, AAB } from "./mainnet";
 import { convexLpTokens } from "./src/tokens/convex";
 
 export function optimism(obj: RR) {
@@ -90,7 +96,7 @@ export function optimism(obj: RR) {
   {
     // redstone
     var mains = {} as Record<string, AA>;
-    var composite = {} as Record<string, AA>;
+    var composite = {} as Record<string, AAB>;
     for (const [token, details] of Object.entries(priceFeedsByToken)) {
       let networkRS = details.Optimism;
       var fields = [networkRS?.Main as PriceFeedData];
@@ -121,6 +127,11 @@ export function optimism(obj: RR) {
             dataServiceId: target.dataServiceId,
             dataId: target.dataId,
             signersThreshold: target.signersThreshold,
+            token: (
+              tickerInfoTokensByNetwork["Optimism"][
+                token as SupportedToken
+              ] as TickerInfo
+            ).address,
           };
         }
       });

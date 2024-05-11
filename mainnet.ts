@@ -2,7 +2,7 @@
 
 
 import {contractsByNetwork, contractParams, CurveParams} from './src/contracts/contracts'
-import {tokenDataByNetwork} from './src/tokens/token'
+import {tokenDataByNetwork, SupportedToken, TickerInfo, tickerInfoTokensByNetwork} from './src/tokens/token'
 import {priceFeedsByToken} from './src/oracles/priceFeeds'
 import {curveTokens} from './src/tokens/curveLP'
 import { yearnTokens } from './src/tokens/yearn';
@@ -114,7 +114,7 @@ export  function mainnet(obj : RR ) {
       signersThreshold: 5,
     }
    } as Record<string, AA>;
-   var composite = {} as Record<string, AA>;
+   var composite = {} as Record<string, AAB>;
     for (const [token, details] of Object.entries(priceFeedsByToken)) {
      let networkRS = details.Mainnet;
      if (networkRS == undefined) {
@@ -142,7 +142,8 @@ export  function mainnet(obj : RR ) {
           type:target.type,
           dataServiceId:target.dataServiceId,
           dataId: target.dataId,
-          signersThreshold:target.signersThreshold
+          signersThreshold:target.signersThreshold,
+          token: (tickerInfoTokensByNetwork["Mainnet"][token as SupportedToken] as TickerInfo).address,
         };
       }
      })
@@ -164,4 +165,11 @@ export type AA =  {
   dataServiceId: string;
   dataId: string;
   signersThreshold: number; 
+}
+export type AAB =  {
+  type: number;
+  dataServiceId: string;
+  dataId: string;
+  signersThreshold: number; 
+  token: string;
 }
