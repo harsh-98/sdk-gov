@@ -118,7 +118,11 @@ export  function mainnet(obj : RR ) {
     for (const [token, details] of Object.entries(priceFeedsByToken)) {
      let networkRS = details.Mainnet;
      if (networkRS == undefined) {
+      if  (details.AllNetworks != undefined) {
+        networkRS = details.AllNetworks
+      } else {
         continue;
+      }
      }
      var  fields = [networkRS?.Main as PriceFeedData];
      if (networkRS?.Reserve != undefined) {

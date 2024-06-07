@@ -101,7 +101,11 @@ export function optimism(obj: RR) {
       let networkRS = details.Optimism;
       var fields = [networkRS?.Main as PriceFeedData];
       if (networkRS == undefined) {
-        continue;
+        if (details.AllNetworks != undefined) {
+          networkRS = details.AllNetworks;
+        } else {
+          continue;
+        }
       }
       if (networkRS?.Reserve != undefined) {
         fields.push(networkRS?.Reserve);

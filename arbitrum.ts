@@ -91,8 +91,12 @@ export  function arbitrum(obj : RR ) {
     for (const [token, details] of Object.entries(priceFeedsByToken)) {
       let networkRS= details.Arbitrum;
       if (networkRS == undefined) {
-        continue;
-     }
+        if  (details.AllNetworks != undefined) {
+          networkRS = details.AllNetworks
+        } else {
+          continue;
+        }
+       }
       var  fields = [networkRS?.Main as PriceFeedData];
       if (networkRS?.Reserve != undefined) {
          fields.push(networkRS?.Reserve) ;
