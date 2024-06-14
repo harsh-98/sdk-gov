@@ -17,18 +17,22 @@ function run () {
         data["G-BLOCK"] = "0xf568F6C71aE0439B8d3FFD60Ceba9B1DcB5819bF";
         data["G-OBS"] = "0x26F7D7509490B292AFBB0443A7A371d345B5f684";
       }
+      obj = change(obj);
+      (((obj.redstone as Record<string, any>)['3CRV'] as Record<string, any>)['dataId'] as string) = '3Crv';
       break;
     case "arbitrum":
       arbitrum(obj);
+      obj = change(obj)
       break;
     case "optimism":
       optimism(obj);
+      obj = change(obj)
       break;
     default:
         console.log("wrong network");
         process.exit(1);
   }
-  console.log(JSON.stringify(change(obj)));
+  console.log(JSON.stringify(obj));
 }
 
 

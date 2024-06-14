@@ -56,7 +56,7 @@ export  function mainnet(obj : RR ) {
   {
     obj['farmingPools'] = {} as Record<string, string>;
     // farming tokens
-     ['sdUSDCV3', 'sdWETHV3', 'sdWBTCV3', 'sdDAIV3','sdUSDTV3','sdGHOV3'].forEach((t) => {
+     ['sdUSDCV3', 'sdWETHV3', 'sdWBTCV3', 'sdDAIV3','sdUSDTV3','sdGHOV3', 'sdcrvUSDV3'].forEach((t) => {
       if (tokens[t] && "NOT DEPLOYED" != tokens[t]) {
         (obj['farmingPools'] as Record<string, string>)[t] = tokens[t];
   }
@@ -159,6 +159,13 @@ export  function mainnet(obj : RR ) {
       dataId: 'weETH_FUNDAMENTAL',
       signersThreshold:5,
     };
+    mains['stETH'] =      {
+            type: 15,
+            dataServiceId: 'redstone-primary-prod',
+            dataId: 'stETH',
+            signersThreshold: 5,
+          };
+          mains['WBTC'].dataId= 'BTC';
     obj['redstone'] = mains;
     obj['compositeRedstone'] = composite;
   }
