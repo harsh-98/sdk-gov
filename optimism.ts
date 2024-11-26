@@ -135,8 +135,8 @@ export function optimism(obj: RR) {
             token: (
               tickerInfoTokensByNetwork["Optimism"][
                 token as SupportedToken
-              ] as TickerInfo
-            ).address,
+              ] as Array<TickerInfo>
+            )[0].address,
           };
         }
       });

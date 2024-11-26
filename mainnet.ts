@@ -147,7 +147,7 @@ export  function mainnet(obj : RR ) {
           dataServiceId:target.dataServiceId,
           dataId: target.dataId,
           signersThreshold:target.signersThreshold,
-          token: (tickerInfoTokensByNetwork["Mainnet"][token as SupportedToken] as TickerInfo).address,
+          token: (tickerInfoTokensByNetwork["Mainnet"][token as SupportedToken] as Array<TickerInfo>)[0].address,
         };
       }
      })

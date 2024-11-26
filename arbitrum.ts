@@ -119,7 +119,7 @@ export  function arbitrum(obj : RR ) {
           dataServiceId:target.dataServiceId,
           dataId: target.dataId,
           signersThreshold:target.signersThreshold,
-          token: (tickerInfoTokensByNetwork["Arbitrum"][token as SupportedToken] as TickerInfo)?.address,
+          token: (tickerInfoTokensByNetwork["Arbitrum"][token as SupportedToken] as Array<TickerInfo>)[0]?.address,
         };
        }
       })
