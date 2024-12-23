@@ -71,6 +71,8 @@ export  function mainnet(obj : RR ) {
 'CURVE_OHMFRAXBP_POOL': '0xFc1e8bf3E81383Ef07Be24c3FD146745719DE48D',
 'CONVEX_OHMFRAXBP_POOL': '0x27A8c58e3DE84280826d615D80ddb33930383fE9',
 'CONVEX_MIM3CRV_POOL': '0xFd5AbF66b003881b88567EB9Ed9c651F14Dc4771',
+'scrvUsUSDe': '0xd29f8980852c2c76fC3f6E96a7Aa06E0BedCC1B1',
+
   };
   for (const [key, value] of Object.entries(tmpTokens)) {
     console.log("here");
@@ -109,7 +111,9 @@ export  function mainnet(obj : RR ) {
       , {});
   // for liquidator solidity pathfinder
   obj['groups'] = {
-    'curvePools' : curvePools,
+    'curvePools' : {
+      ...curvePools, 'scrvUsUSDe': 2,
+},
     'yearnCurveTokens': Object.entries(yearnTokens)
     .filter(([, data]) => curveSymbols.includes(data.underlying))
     .reduce((obj, [token, data]) => 

@@ -8,6 +8,6 @@
   "eslint.validate": ["javascript", "typescript"],
   "files.eol": "\n",
   "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "vscode.json-language-features"
   }
 }
